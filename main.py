@@ -9,11 +9,12 @@ logging.basicConfig(
 
 logger=logging.getLogger(__name__)
 
-def run(user_input: str):
+def run(user_input: str, skill: str="general"):
     graph=build_graph()
 
     initial_state = {
         "user_input": user_input,
+        "skill": skill,
         "draft": "",
         "fact_check": None,
         "critique": None,
@@ -31,4 +32,7 @@ def run(user_input: str):
 
 
 if __name__=="__main__":
-    run("Explain how transformer work")
+    run(
+        "Write a Python function to check if a number is prime",
+        skill="code",
+        )

@@ -1,6 +1,7 @@
 import logging
 from langchain_ollama import ChatOllama
 from state.schema import AgentState
+from skills.registry import get_skill
 from config.settings import LOCAL_MODEL_NAME
 
 logger=logging.getLogger(__name__)
@@ -22,8 +23,18 @@ def refine_node(state: AgentState) -> dict:
 Also correct these factual errors:
 {fact_check["corrections"]}
 """
+    if state["skill"] == "code":
+        #code skill - delegate prompt building to CodeReviewSkill
+        skill= get_skill(state["skill"])
+        prompt=skill.build_refine_prompt(
+            user_input=state["user_input"],
+            draft=state["draft"],
+            critique=critique,
+            correction_notes=correction_notes,
+        )
+    else:
         
-    prompt=f"""
+        prompt=f"""
 you are revising a draft based on reviewer feedback.PermissionError
 
 Original request:
@@ -44,7 +55,7 @@ Apply these suggestions:
 
 Write the improved draft only. Do not include explanations or commentary.
 """
-    logger.info("Refining draft (iteration %s)", state["iteration"])
+    logger.info("Refining draft (iteration %s, skill=%s)", state["iteration"],state["skill"])
     response=llm.invoke(prompt)
 
     return{
