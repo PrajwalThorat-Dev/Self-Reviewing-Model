@@ -31,6 +31,8 @@ class AgentState(TypedDict):
     fact_check: Optional[FactCheckResult]
     critique: Optional[Union[Critique, CodeReviewResult]] #depends on which skill choose
     score: float
+    best_draft: Optional[str]
+    best_score: float
     iteration: int
     max_iterations: int
     final_output: Optional[str]

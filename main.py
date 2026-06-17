@@ -19,6 +19,8 @@ def run(user_input: str, skill: str="general"):
         "fact_check": None,
         "critique": None,
         "score": 0.0,
+        "best_draft": None,
+        "best_score": 0.0,
         "iteration": 0,
         "max_iterations": MAX_ITERATION,
         "final_output": None,

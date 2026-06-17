@@ -9,6 +9,7 @@ llm = ChatGroq(
     api_key=GROQ_API_KEY,
     model=GROQ_MODEL_NAME,
     temperature=0,
+    max_tokens=1024,
 )
 
 # json_mode for structured output for smaller Groq models

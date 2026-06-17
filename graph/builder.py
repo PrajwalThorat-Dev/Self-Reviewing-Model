@@ -8,6 +8,7 @@ from nodes.fact_check import fact_check_node
 from nodes.critique import critique_node
 from nodes.critique_code import critique_code_node
 from nodes.refine import refine_node
+from nodes.track_best import track_best_node
 from nodes.finalize import finalize_node
 
 
@@ -43,6 +44,7 @@ def build_graph() -> StateGraph:
     graph.add_node("critique", critique_node)
     graph.add_node("critique_code", critique_code_node)
     graph.add_node("refine", refine_node)
+    graph.add_node("track_best", track_best_node)
     graph.add_node("finalize", finalize_node)
     
 
@@ -61,20 +63,17 @@ def build_graph() -> StateGraph:
         },
     )
     
+    # both critique paths now flow through track_best first
+    graph.add_edge("critique", "track_best")
+    graph.add_edge("critique_code", "track_best")
+
+    # should_continue runs only after best draft is recorded
     graph.add_conditional_edges(
-        "critique",
+        "track_best",
         should_continue,
         {
-            "refine":"refine",
-            "finalize":"finalize",
-        },
-    )
-    graph.add_conditional_edges(
-        "critique_code",
-        should_continue,
-        {
-            "refine":"refine",
-            "finalize":"finalize",
+            "refine": "refine",
+            "finalize": "finalize",
         },
     )
     graph.add_edge("refine", "fact_check")      # after refine, re-check facts
