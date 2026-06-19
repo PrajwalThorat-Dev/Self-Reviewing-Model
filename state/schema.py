@@ -36,3 +36,5 @@ class AgentState(TypedDict):
     iteration: int
     max_iterations: int
     final_output: Optional[str]
+    blocked: bool
+    block_reason: Optional[str]
