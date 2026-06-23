@@ -1,7 +1,4 @@
-import logging
 from typing import TypedDict, Optional, Union
-
-logger=logging.getLogger(__name__)
 
 #Used by the "code" skill critique node
 class CodeReviewResult(TypedDict):
@@ -26,15 +23,13 @@ class FactCheckResult(TypedDict):
 
 class AgentState(TypedDict):
     user_input: str
-    skill: str #general or code Choosed at run time
-    draft:str
-    fact_check: Optional[FactCheckResult]
-    critique: Optional[Union[Critique, CodeReviewResult]] #depends on which skill choose
+    skill: Optional[str]                                    # set by review_agent via load_skill
+    draft: str
+    blocked: bool
+    critique: Optional[Union[Critique, CodeReviewResult]]  # shape depends on active skill
     score: float
     best_draft: Optional[str]
     best_score: float
     iteration: int
     max_iterations: int
     final_output: Optional[str]
-    blocked: bool
-    block_reason: Optional[str]

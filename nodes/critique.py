@@ -22,7 +22,6 @@ def critique_node(state: AgentState) -> dict:
     if state.get("fact_check") and not state["fact_check"]["is_accurate"]:
         fact_check_summary = f"Flagged claims: {state['fact_check']['flagged_claims']}"
 
-    # everything below is now OUTSIDE the if block — runs regardless
     prompt = f"""
 You are a strict reviewer evaluating the quality of a draft response.
 
